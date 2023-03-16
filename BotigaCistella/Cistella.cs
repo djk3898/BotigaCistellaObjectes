@@ -106,6 +106,21 @@
                 productesAmpliat[i] = quantitat[i];
             return productesAmpliat;
         }
+        private string ToString()
+        {
+            string tiquet = "";
+            tiquet += $"\n        {botiga}        \n\n";
+            tiquet += $"{data}\n";
+            tiquet += "--------------------------------";
+            for(int i = 0; i < nElements; i++)
+            {
+                tiquet += $"{productes[i]} ({productes[i].Preu()})\t\t{productes[i].Preu() * quantitat[i]}\nx{quantitat[i]}";
+                tiquet += "--------------------------------";
+            }
+            tiquet += $"TOTAL (IVA inclòs): {nElements}\t\t{CostTotal()}";
+            tiquet += "\n\nGràcies per la seva compra!!";
+            return tiquet;
+        }
         public void ComprarProducte(Producte compra, int quant)
         {
             char resposta;
@@ -154,6 +169,7 @@
                 }
             }
             else Console.WriteLine("Aquest producte no està a la botiga.");
+            data = DateTime.Now;
         }
         public void ComprarProducte(Producte[] compres, int[] quants)
         {
@@ -215,6 +231,11 @@
                 }
             }
             if (!totsAfegits) Console.WriteLine("Algun dels productes indicats no es troba en aquesta botiga.");
+            data = DateTime.Now;
+        }
+        public void Mostra()
+        {
+            Console.WriteLine(ToString());
         }
     }
 }
