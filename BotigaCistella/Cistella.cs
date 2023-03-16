@@ -71,6 +71,14 @@ namespace BotigaCistella
             }
         }
         //Metodes
-        private double CostTotal() { }
+        private double CostTotal() 
+        {
+            double total = 0;
+            for(int i = 0; i < nElements; i++)
+            {
+                total += productes[i].Preu() * quantitat[i];
+            }
+            return total;
+        }
     }
 }

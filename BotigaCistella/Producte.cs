@@ -55,7 +55,7 @@ namespace BotigaCistella
         //Metodes
         public double Preu()
         {
-            return (preuSenseIva * iva) * quantitat;
+            return (preuSenseIva * iva);
         }
         public string ToString()
         {
