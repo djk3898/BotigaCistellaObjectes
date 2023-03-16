@@ -21,7 +21,16 @@ namespace BotigaCistella
             get { return productes; }
             set 
             {
-                
+                if(value.Length < productes.Length - nElements)
+                {
+                    int j = 0;
+                    for(int i = nElements; i < productes.Length; i++)
+                    {
+                        productes[i] = value[j];
+                        j++;
+                    }
+                    nElements += value.Length;
+                }
             }
         }
         public int NElements
