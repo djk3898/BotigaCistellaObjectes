@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace BotigaCistella
 {
@@ -21,16 +22,25 @@ namespace BotigaCistella
             get { return productes; }
             set 
             {
-                if(value.Length < productes.Length - nElements)
+                if (value.Length < productes.Length - nElements)
                 {
-                    int j = 0;
-                    for(int i = nElements; i < productes.Length; i++)
+                    int j = 0, afegit = 0;
+                    for (int i = nElements; i < productes.Length && j < value.Length; i++)
                     {
-                        productes[i] = value[j];
+                        if (value[j].Preu() < diners)
+                        {
+                            productes[i] = value[j];
+                            quantitat[i] = 1;
+                            afegit++;
+                            diners -= value[j].Preu();
+                        }
+                        else i--;
                         j++;
                     }
-                    nElements += value.Length;
+                    nElements += afegit;
+                    if (afegit < value.Length) Console.WriteLine("Alguns productes no s'han afegit a la cistella per falta de diners.");
                 }
+                else Console.WriteLine("Els productes no caben a la cistella.");
             }
         }
         public int NElements
@@ -89,5 +99,6 @@ namespace BotigaCistella
             }
             return total;
         }
+        
     }
 }
