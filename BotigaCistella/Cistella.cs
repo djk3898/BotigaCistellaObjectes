@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
-
-namespace BotigaCistella
+﻿namespace BotigaCistella
 {
     internal class Cistella
     {
@@ -49,7 +42,7 @@ namespace BotigaCistella
         }
         public double Diners
         {
-            get { return diners - CostTotal(); }
+            get { return diners; }
             set { if(value > 0) diners += value; }
         }
         public DateTime Data
@@ -99,6 +92,129 @@ namespace BotigaCistella
             }
             return total;
         }
-        
+        private Producte[] AmpliarCistella(int ampliacio)
+        {
+            Producte[] productesAmpliat = new Producte[productes.Length + ampliacio];
+            for (int i = 0; i < productes.Length; i++)
+                productesAmpliat[i] = productes[i];
+            return productesAmpliat;
+        }
+        private int[] AmpliarQuantitat(int ampliacio)
+        {
+            int[] productesAmpliat = new int[quantitat.Length + ampliacio];
+            for (int i = 0; i < quantitat.Length; i++)
+                productesAmpliat[i] = quantitat[i];
+            return productesAmpliat;
+        }
+        public void ComprarProducte(Producte compra, int quant)
+        {
+            char resposta;
+            //comprova que producte existeix
+            if (botiga.BuscarProducte(compra.Nom))
+            {
+                //comprova que hi ha espai a la cistella
+                if (productes.Length > nElements)
+                {
+                    //comprova que tenim suficients diners
+                    if (compra.Preu() * quant < diners)
+                    {
+                        //afegim producte
+                        productes[nElements] = compra;
+                        quantitat[nElements] = quant;
+                        nElements++;
+                        //restem diners
+                        diners -= compra.Preu() * quant;
+                    }
+                    else
+                    {
+                        do
+                        {
+                            Console.WriteLine("Diners insuficients, vols ingresar? (s/n)");
+                            resposta = Convert.ToChar(Console.ReadLine());
+                        } while (resposta == 's' || resposta == 'n');
+                        if (resposta == 's')
+                        {
+                            Console.Write("Indica els diners a ingressar: ");
+                            diners = double.Parse(Console.ReadLine());
+                        }
+                    }
+                }
+                else
+                {
+                    do
+                    {
+                        Console.WriteLine("La cistella és plena, vols ampliar-la? (s/n)");
+                        resposta = Convert.ToChar(Console.ReadLine());
+                    } while (resposta == 's' || resposta == 'n');
+                    if (resposta == 's')
+                    {
+                        productes = AmpliarCistella(1);
+                        quantitat = AmpliarQuantitat(1);
+                    }
+                }
+            }
+            else Console.WriteLine("Aquest producte no està a la botiga.");
+        }
+        public void ComprarProducte(Producte[] compres, int[] quants)
+        {
+            char resposta = ' ';
+            bool totsAfegits = true;
+            //comprova espai a la cistella
+            if (productes.Length - nElements > compres.Length)
+            {
+                //afegeix producte si existeix i tenim suficients diners
+                for (int i = 0; i < compres.Length; i++)
+                {
+                    resposta = ' ';
+                    //comprova que producte existeix
+                    if (botiga.BuscarProducte(compres[i].Nom))
+                    {
+                        //comprova que tenim suficients diners
+                        if (compres[i].Preu() * quants[i] < diners)
+                        {
+                            //afegim producte
+                            productes[nElements] = compres[i];
+                            quantitat[nElements] = quants[i];
+                            nElements++;
+                            //restem diners
+                            diners -= compres[i].Preu() * quants[i];
+                        }
+                        else
+                        {
+                            do
+                            {
+                                Console.WriteLine("Diners insuficients, vols ingresar? (s/n)");
+                                resposta = Convert.ToChar(Console.ReadLine());
+                            } while (resposta == 's' || resposta == 'n');
+                            if (resposta == 's')
+                            {
+                                Console.Write("Indica els diners a ingressar: ");
+                                diners = double.Parse(Console.ReadLine());
+                                i--;
+                            }
+                        }
+
+
+                    }
+                    else totsAfegits = false;
+                }
+            }
+            else
+            {
+                do
+                {
+                    Console.WriteLine("La cistella és plena, vols ampliar-la? (s/n)");
+                    resposta = Convert.ToChar(Console.ReadLine());
+                } while (resposta == 's' || resposta == 'n');
+                if (resposta == 's')
+                {
+                    Console.Write($"Falten {compres.Length - productes.Length - nElements} espais per completar aquesta compra.\nQuants espais vols afegir? ");
+                    int ampliar = int.Parse(Console.ReadLine());
+                    productes = AmpliarCistella(ampliar);
+                    quantitat = AmpliarQuantitat(ampliar);
+                }
+            }
+            if (!totsAfegits) Console.WriteLine("Algun dels productes indicats no es troba en aquesta botiga.");
+        }
     }
 }
