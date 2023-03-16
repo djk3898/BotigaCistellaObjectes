@@ -29,7 +29,25 @@ namespace BotigaCistella
             set { nElements = value; }
         }
         //Constructors
-
+        public Botiga()
+        {
+            nomBotiga = String.Empty;
+            productes = new Producte[10];
+            nElements = 0;
+        }
+        public Botiga(string nom, int nProductes) : this()
+        {
+            nomBotiga = nom;
+            productes = new Producte[nProductes];
+        }
+        public Botiga(string nom, Producte[] productes)
+        {
+            nomBotiga = nom;
+            this.productes = new Producte[productes.Length];
+            for(int i = 0; i < productes.Length; i++)
+                this.productes[i] = productes[i];
+            nElements = productes.Length;
+        }
         //Metodes
 
     }

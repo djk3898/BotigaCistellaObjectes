@@ -44,8 +44,33 @@ namespace BotigaCistella
             set { DateTime.TryParse(value, out data); }
         }
         //Constructors
-
+        public Cistella()
+        {
+            productes = new Producte[10];
+            nElements = 0;
+            diners = 0;
+            botiga = null;
+        }
+        public Cistella(Botiga botiga, Producte[] productes, int[] quantitats, double diners)
+        {
+            //productes
+            this.productes = new Producte[productes.Length];
+            for (int i = 0; i < productes.Length; i++)
+                this.productes[i] = productes[i];
+            //quantitats
+            this.quantitat = new int[quantitats.Length];
+            for (int i = 0; i < quantitats.Length; i++)
+                this.quantitat[i] = quantitats[i];
+            
+            nElements = productes.Length;
+            //diners
+            if(CostTotal() > diners) { }
+            else
+            {
+                this.diners = diners;
+            }
+        }
         //Metodes
-        public double CostTotal() { }
+        private double CostTotal() { }
     }
 }
