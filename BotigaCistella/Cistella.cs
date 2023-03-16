@@ -121,6 +121,30 @@
             tiquet += "\n\nGràcies per la seva compra!!";
             return tiquet;
         }
+        private void OrdenarCistella()
+        {
+            bool ordenat = false;
+            for(int volta = 0; volta < nElements - 1 && !ordenat; volta++)
+            {
+                ordenat = true;
+                for(int i = 0; i < nElements - 1 - volta; i++)
+                {
+                    if (String.Compare(productes[i].Nom, productes[i + 1].Nom) < 0)
+                    {
+                        //reordena productes
+                        Producte aux = productes[i];
+                        productes[i] = productes[i + 1];
+                        productes[i + 1] = aux;
+                        //reordena quantitats
+                        int auxQ = quantitat[i];
+                        quantitat[i] = quantitat[i + 1];
+                        quantitat[i + 1] = auxQ;
+
+                        ordenat = false;
+                    }
+                }
+            }
+        }
         public void ComprarProducte(Producte compra, int quant)
         {
             char resposta;
@@ -235,6 +259,7 @@
         }
         public void Mostra()
         {
+            OrdenarCistella();
             Console.WriteLine(ToString());
         }
     }
